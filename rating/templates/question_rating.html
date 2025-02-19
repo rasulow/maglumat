@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% load cache %}
+{% block title %}
+Вопросы с собеседований на {{ prof_data.title }}
+{% endblock %}
+
+{% block content %}
+
+    <h1 class="mt-5 fs-3"> Вопросы с собеседований на {{ prof_data.title }}</h1>
+    {% if prof_data.votes_access %}
+    <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ questions_amount }}.
+<!--        Вы можете-->
+<!--        <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>-->
+    </p>
+    {% else %}
+    <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ ratings.count }}.
+        На данный момент мало данных для просчета вероятности.
+<!--        Вы можете-->
+<!--        <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>-->
+    </p>
+    {% endif %}
+    <div class="row align-items-start">
+            <div class="col-12 col-md-2 d-flex flex-column align-items-start">
+                <p class="">Фильтр:</p>
+                <form action="">
+                    <select class="form-select" aria-label="Default select example" name="tag">
+                        {% if tag == None %}
+                            <option selected>Все</option>
+                        {% else %}
+                            <option selected>{{ tag }}</option>
+                        {% endif %}
+                          <option value="Все">Все</option>
+                        {% for tag in prof_data.tags.all %}
+                          <option value="{{ tag }}">{{ tag }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-primary mt-3">Выбрать</button>
+                </form>
+            </div>
+            {% if access %}
+            <div class="col">
+                <form class="d-flex mb-3" role="search" method="get" action="">
+                    {{ search_form.search_query }}
+                    <button class="btn btn-outline-success" type="submit">Поиск</button>
+                </form>
+                {% if prof_data.votes_access %}
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th>Шанс</th>
+                            <th>Вопрос</th>
+                            <th class="d-none d-sm-table-cell">Тег</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rating in page_obj %}
+                        <tr>
+                            {% if rating.chance >= 10 %}
+                            <td align="center" class=" text-success">{{ rating.chance }}%</td>
+                            {% else %}
+                            <td align="center" class=" text-warning">{{ rating.chance }}%</td>
+                            {% endif %}
+                            <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
+                            {% if rating.question.tag == "Нет" %}
+                            <td class="d-none d-sm-table-cell"><a class="" href="https://t.me/kivaiko" target="_blank">Предложить</a></td>
+                            {% else %}
+                            <td class="d-none d-sm-table-cell">{{ rating.question.tag }}</td>
+                            {% endif %}
+                        </tr>
+                        {% endfor  %}
+                    </tbody>
+                </table>
+                {% else %}
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th>Вопрос</th>
+                            <th class="d-none d-sm-table-cell">Тег</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rating in page_obj %}
+                        <tr>
+                            <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
+                            <td>{{ rating.question.tag }}</td>
+                        </tr>
+                        {% endfor  %}
+                    </tbody>
+                </table>
+                {% endif %}
+                {% if ratings.count > 100 %}
+                <nav>
+                  <ul class="pagination pagination-sm">
+                      {% for p in page_obj.paginator.page_range %}
+                      {% if page_obj.number == p %}
+                      <li class="page-item active" aria-current="page">
+                      <span class="page-link">{{ p }}</span>
+                      </li>
+                      {% else %}
+                        {% if tag %}
+                            <li class="page-item">
+                                  <a class="page-link" href="?tag={{ tag }}&page={{ p }}">{{ p }}</a>
+                              </li>
+                        {% else %}
+                              <li class="page-item">
+                                  <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+                              </li>
+                        {% endif %}
+                      {% endif %}
+                      {% endfor %}
+                  </ul>
+                </nav>
+                {% endif %}
+            </div>
+            {% else %}
+            <div class="col">
+                {% if prof_data.votes_access %}
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th>Шанс</th>
+                            <th>Вопрос</th>
+                            <th class="d-none d-sm-table-cell">Тег</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rating in page_obj|slice:":15" %}
+                        <tr>
+                            {% if rating.chance >= 10 %}
+                            <td align="center" class=" text-success">{{ rating.chance }}%</td>
+                            {% else %}
+                            <td align="center" class=" text-warning">{{ rating.chance }}%</td>
+                            {% endif %}
+                            <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
+                            {% if rating.question.tag == Нет %}
+                            <td><a href="https://t.me/kivaiko" target="_blank">Предложить</a></td>
+                            {% else %}
+                            <td>{{ rating.question.tag }}</td>
+                            {% endif %}
+                        </tr>
+                        {% endfor  %}
+                    </tbody>
+                </table>
+                {% else %}
+                <table class="table table-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th>Вопрос</th>
+                            <th class="d-none d-sm-table-cell">Тег</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rating in page_obj|slice:":15" %}
+                        <tr>
+                            <td><a href="{{ rating.question.get_url }}" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{ rating.question.title }}</a></td>
+                            <td>{{ rating.question.tag }}</td>
+                        </tr>
+                        {% endfor  %}
+                    </tbody>
+                </table>
+                {% endif %}
+                <div class="card border-0 text-center">
+                    <div class="card-body">
+                        <p class="card-title fs-4 mb-3">Вам доступно первые 15 вопросов из {{ questions_amount }}</p>
+                       <p class="card-title fs-6 mb-3">Получите полный доступ <b>бесплатно</b>, подписавшись на Telegram</p>
+                       <a href="https://t.me/easyoffer_bot" target=»_blank class="btn btn-primary ms-2 mt-1" style="background-color: #28a9eb; border-color: #28a9eb"><i class="bi bi-telegram me-2"></i>Бесплатно через Telegram</a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Добавление вопроса</h5>
+            <button type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
+              <span  aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                           <p class="fs-5">Вы добавляете вопрос для {{ prof_data.title }}</p>
+                        <label for="{{ form.title.id_for_label }}" class="col-form-label">{{ form.title.label }}</label>
+                        {{ form.title }}
+                      </div>
+                    <div class="mb-3">
+                        <label for="{{ form.tag.id_for_label }}" class="col-form-label">{{ form.tag.label }}</label>
+                        <select name="tag" class="form-select">
+                            {% for tag in available_tags %}
+                                <option value="{{ tag.id }}">{{ tag.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary">Добавить вопрос </button>
+                    </div>
+                </form>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

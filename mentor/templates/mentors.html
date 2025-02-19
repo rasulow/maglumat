@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Список менторов по программированию, тестированию, анализу и прочим IT профессиям
+{% endblock %}
+
+{% block content %}
+    <h1 class="mt-5 fs-3"> Список менторов </h1>
+    {% if user.is_authenticated %}
+    <p class="fs-5 mt-3 mb-5 fs-6"><a href="mentor/account">Перейти в аккаунт ментора</a> или <a href="{% url 'logout' %}">Выйти</a></p>
+    {% else %}
+    <p class="fs-5 mt-3 mb-5 fs-6">Вы можете <a href="{% url 'register' %}">Добавить себя в список менторов</a> или <a href="{% url 'login' %}">Войти как ментор</a></p>
+    {% endif %}
+    <div class="row align-items-start">
+            <div class="col-12 col-md-2">
+                <form method="get">
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-sm btn-primary mt-1">Выбрать</button>
+                </form>
+            </div>
+            <div class="col">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Ментор</th>
+                      <th scope="col">Должность</th>
+                      <th scope="col">Опыт</th>
+                      <th scope="col" class="d-none d-sm-table-cell">30 мин.</th>
+                      <th scope="col">1 ч.</th>
+                    </tr>
+                  </thead>
+                  <tbody class="table-group-divider">
+                  {% for mentor in mentors %}
+                    <tr>
+                      <td><img src="{{ mentor.image.url }}" class="me-2 d-none d-md-inline-block" height="24" width="24"><a class="link-offset-2 link-offset-3-hover link-underline
+            link-underline-opacity-0 link-underline-opacity-75-hover" href="{{ mentor.get_mentor_url }}">
+                          {{ mentor.surname|title }} {{ mentor.name|title }}</a></td>
+                      <td>{{ mentor.description }}</td>
+                      <td>
+                            {% if mentor.experience == 1 or mentor.experience == 21 or mentor.experience == 31 %}
+                                {{ mentor.experience }} год
+                            {% elif mentor.experience > 1 and mentor.experience < 5 %}
+                                {{ mentor.experience }} года
+                            {% elif mentor.experience > 21 and mentor.experience < 25 %}
+                                {{ mentor.experience }} года
+                            {% else %}
+                                {{ mentor.experience }} лет
+                            {% endif %}
+                      </td>
+                      <td class="d-none d-md-table-cell">{{ mentor.cost_30m }} руб.</td>
+                      <td>{{ mentor.cost_1h }} руб.</td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+        </div>
+
+{% endblock %}
