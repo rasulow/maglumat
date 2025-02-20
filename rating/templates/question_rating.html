@@ -8,7 +8,7 @@
 
     <h1 class="mt-5 fs-3"> {{ prof_data.title }} sapaga degisli soraglar</h1>
     {% if prof_data.votes_access %}
-    <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ questions_amount }}.
+    <p class="fs-5 mt-3 mb-5 fs-6">Umumy sorag sany: {{ questions_amount }}.
 <!--        Вы можете-->
 <!--        <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>-->
     </p>
@@ -24,11 +24,11 @@
                 <form action="">
                     <select class="form-select" aria-label="Default select example" name="tag">
                         {% if tag == None %}
-                            <option selected>Все</option>
+                            <option selected>Hemmesi</option>
                         {% else %}
                             <option selected>{{ tag }}</option>
                         {% endif %}
-                          <option value="Все">Все</option>
+                          <option value="Все">Hemmesi</option>
                         {% for tag in prof_data.tags.all %}
                           <option value="{{ tag }}">{{ tag }}</option>
                         {% endfor %}
