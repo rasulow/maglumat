@@ -1,27 +1,26 @@
 {% extends 'base.html' %}
 {% load cache %}
 {% block title %}
-Вопросы с собеседований на {{ prof_data.title }}
+{{ prof_data.title }} sapaga degisli soraglar
 {% endblock %}
 
 {% block content %}
 
-    <h1 class="mt-5 fs-3"> Вопросы с собеседований на {{ prof_data.title }}</h1>
+    <h1 class="mt-5 fs-3"> {{ prof_data.title }} sapaga degisli soraglar</h1>
     {% if prof_data.votes_access %}
     <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ questions_amount }}.
 <!--        Вы можете-->
 <!--        <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>-->
     </p>
     {% else %}
-    <p class="fs-5 mt-3 mb-5 fs-6">Вопросов всего: {{ ratings.count }}.
-        На данный момент мало данных для просчета вероятности.
+    <p class="fs-5 mt-3 mb-5 fs-6">Umumy sorag sany: {{ ratings.count }}.
 <!--        Вы можете-->
 <!--        <a type="button" class="link" data-bs-toggle="modal" data-bs-target="#exampleModal"> Добавить вопрос </a>-->
     </p>
     {% endif %}
     <div class="row align-items-start">
             <div class="col-12 col-md-2 d-flex flex-column align-items-start">
-                <p class="">Фильтр:</p>
+                <p class="">Filtr:</p>
                 <form action="">
                     <select class="form-select" aria-label="Default select example" name="tag">
                         {% if tag == None %}
@@ -34,14 +33,14 @@
                           <option value="{{ tag }}">{{ tag }}</option>
                         {% endfor %}
                     </select>
-                    <button type="submit" class="btn btn-sm btn-primary mt-3">Выбрать</button>
+                    <button type="submit" class="btn btn-sm btn-primary mt-3">Saylamak</button>
                 </form>
             </div>
             {% if access %}
             <div class="col">
                 <form class="d-flex mb-3" role="search" method="get" action="">
                     {{ search_form.search_query }}
-                    <button class="btn btn-outline-success" type="submit">Поиск</button>
+                    <button class="btn btn-outline-success" type="submit">Gozle</button>
                 </form>
                 {% if prof_data.votes_access %}
                 <table class="table table-sm table-hover">
