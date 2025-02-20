@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'mentor',
     'analytic',
     'users',
+    'access',
 ]
 
 MIDDLEWARE = [
