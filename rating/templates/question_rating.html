@@ -46,9 +46,9 @@
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
-                            <th>Шанс</th>
-                            <th>Вопрос</th>
-                            <th class="d-none d-sm-table-cell">Тег</th>
+                            <th>Mumkincilik</th>
+                            <th>Sorag</th>
+                            <th class="d-none d-sm-table-cell">Teg</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,7 +73,7 @@
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
-                            <th>Вопрос</th>
+                            <th>Sorag</th>
                             <th class="d-none d-sm-table-cell">Тег</th>
                         </tr>
                     </thead>
@@ -118,7 +118,7 @@
                     <thead>
                         <tr>
                             <th>Шанс</th>
-                            <th>Вопрос</th>
+                            <th>Sorag</th>
                             <th class="d-none d-sm-table-cell">Тег</th>
                         </tr>
                     </thead>
@@ -144,7 +144,7 @@
                 <table class="table table-sm table-hover">
                     <thead>
                         <tr>
-                            <th>Вопрос</th>
+                            <th>Sorag</th>
                             <th class="d-none d-sm-table-cell">Тег</th>
                         </tr>
                     </thead>
@@ -165,7 +165,7 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Добавление вопроса</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Sorag gosmak</h5>
             <button type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
               <span  aria-hidden="true">&times;</span>
             </button>
@@ -174,7 +174,7 @@
                 <form action="" method="POST">
                     {% csrf_token %}
                     <div class="mb-3">
-                           <p class="fs-5">Вы добавляете вопрос для {{ prof_data.title }}</p>
+                           <p class="fs-5">{{ prof_data.title }} sapaga degisli soraglary gosyarsynyz</p>
                         <label for="{{ form.title.id_for_label }}" class="col-form-label">{{ form.title.label }}</label>
                         {{ form.title }}
                       </div>
@@ -187,8 +187,8 @@
                         </select>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                        <button type="submit" class="btn btn-primary">Добавить вопрос </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Yapmak</button>
+                        <button type="submit" class="btn btn-primary">Sorag gosmak </button>
                     </div>
                 </form>
           </div>
